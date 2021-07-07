@@ -31,17 +31,20 @@ export default class ContractsApi extends ExplorerApi {
       } else if (this.dataSource === DATA_SOURCE_TYPE.INDEXER_BACKEND) {
         return await this.call<any>("select:INDEXER_BACKEND", [
           `SELECT
-            DIV(transactions.block_timestamp, 1000*1000) AS block_timestamp,
-            transactions.transaction_hash AS hash
-          FROM transactions
-          LEFT JOIN transaction_actions ON transaction_actions.transaction_hash = transactions.transaction_hash
-          WHERE transaction_actions.action_kind = 'DEPLOY_CONTRACT' AND transactions.receiver_account_id = :id
-          ORDER BY transactions.included_in_block_hash DESC
+            DIV(receipts.included_in_block_timestamp, 1000*1000) AS block_timestamp,
+            receipts.originated_from_transaction_hash AS hash
+          FROM action_receipt_actions
+          LEFT JOIN receipts ON receipts.receipt_id = action_receipt_actions.receipt_id
+          WHERE action_receipt_actions.action_kind = 'DEPLOY_CONTRACT' AND action_receipt_actions.receipt_receiver_account_id = :id
+          ORDER BY action_receipt_actions.receipt_included_in_block_timestamp DESC
           LIMIT 1`,
           {
             id,
           },
         ]).then((info) => {
+          if (info.length === 0) {
+            return undefined;
+          }
           return {
             block_timestamp: parseInt(info[0].block_timestamp),
             hash: info[0].hash,
@@ -53,8 +56,9 @@ export default class ContractsApi extends ExplorerApi {
     };
 
     try {
-      const codeHash = await this.queryCodeHash(id);
-      if (codeHash !== "11111111111111111111111111111111") {
+      // codeHash does not exist for deleted accounts
+      const codeHash = await this.queryCodeHash(id).catch(() => {});
+      if (codeHash && codeHash !== "11111111111111111111111111111111") {
         const [contractInfo, accessKeys] = await Promise.all([
           queryContractInfo(),
           this.queryAccessKey(id),

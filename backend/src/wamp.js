@@ -2,9 +2,9 @@ const autobahn = require("autobahn");
 const BN = require("bn.js");
 const geoip = require("geoip-lite");
 const { sha256 } = require("js-sha256");
-const { queryBridgeTokenHolders } = require("./db-utils");
-const stats = require("./stats");
 
+const aggregations = require("./aggregations");
+const stats = require("./stats");
 const models = require("../models");
 
 const {
@@ -108,6 +108,15 @@ wampHandlers["nearcore-status"] = async () => {
 
 wampHandlers["nearcore-validators"] = async () => {
   return await nearRpc.sendJsonRpc("validators", [null]);
+};
+
+// genesis configuration
+wampHandlers["nearcore-genesis-protocol-configuration"] = async ([blockId]) => {
+  return await nearRpc.sendJsonRpc("block", { block_id: blockId });
+};
+
+wampHandlers["get-latest-circulating-supply"] = async () => {
+  return aggregations.getCirculatingSupply();
 };
 
 wampHandlers["get-account-details"] = async ([accountId]) => {
@@ -305,9 +314,8 @@ wampHandlers["partner-unique-user-amount"] = async () => {
   return await stats.getPartnerUniqueUserAmount();
 };
 
-// bridge query
-wampHandlers["get-bridge-token-holders"] = async ([bridgeTokenContractId]) => {
-  return await queryBridgeTokenHolders(bridgeTokenContractId);
+wampHandlers["nearcore-genesis-accounts-count"] = async () => {
+  return await stats.getGenesisAccountsCount();
 };
 
 // set up wamp

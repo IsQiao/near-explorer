@@ -41,14 +41,18 @@ exports[`<TransactionDetails /> renders no deposit 1`] = `
             <div
               className="ml-auto card-cell-text align-self-center col-md-12 col-auto"
             >
-              <a
-                className="jsx-3150401870 account-link"
-                href="/accounts/signer.test"
+              <span
                 onClick={[Function]}
-                onMouseEnter={[Function]}
               >
-                signer.test
-              </a>
+                <a
+                  className="jsx-3150401870 account-link"
+                  href="/accounts/signer.test"
+                  onClick={[Function]}
+                  onMouseEnter={[Function]}
+                >
+                  signer.test
+                </a>
+              </span>
             </div>
           </div>
         </div>
@@ -88,14 +92,18 @@ exports[`<TransactionDetails /> renders no deposit 1`] = `
             <div
               className="ml-auto card-cell-text align-self-center col-md-12 col-auto"
             >
-              <a
-                className="jsx-3150401870 account-link"
-                href="/accounts/receiver.test"
+              <span
                 onClick={[Function]}
-                onMouseEnter={[Function]}
               >
-                receiver.test
-              </a>
+                <a
+                  className="jsx-3150401870 account-link"
+                  href="/accounts/receiver.test"
+                  onClick={[Function]}
+                  onMouseEnter={[Function]}
+                >
+                  receiver.test
+                </a>
+              </span>
             </div>
           </div>
         </div>
@@ -196,7 +204,8 @@ exports[`<TransactionDetails /> renders no deposit 1`] = `
                 onMouseOver={[Function]}
               >
                 &lt;0.00001
-                 Ⓝ
+                 
+                Ⓝ
               </span>
             </div>
           </div>
@@ -244,7 +253,8 @@ exports[`<TransactionDetails /> renders no deposit 1`] = `
                 onMouseOver={[Function]}
               >
                 0
-                 Ⓝ
+                 
+                Ⓝ
               </span>
             </div>
           </div>
@@ -441,14 +451,18 @@ exports[`<TransactionDetails /> renders no deposit 1`] = `
             <div
               className="ml-auto card-cell-text align-self-center col-md-12 col-auto"
             >
-              <a
-                className="block-link"
-                href="/blocks/BvJeW6gnFjkCBKCsRNEBrRLDQCFZNxLAi6uXzmLaVrrj"
+              <span
                 onClick={[Function]}
-                onMouseEnter={[Function]}
               >
-                BvJeW6gnFjkCBKCsRNEBrRLDQCFZNxLAi6uXzmLaVrrj
-              </a>
+                <a
+                  className="block-link"
+                  href="/blocks/BvJeW6gnFjkCBKCsRNEBrRLDQCFZNxLAi6uXzmLaVrrj"
+                  onClick={[Function]}
+                  onMouseEnter={[Function]}
+                >
+                  BvJeW6gnFjkCBKCsRNEBrRLDQCFZNxLAi6uXzmLaVrrj
+                </a>
+              </span>
             </div>
           </div>
         </div>
@@ -499,14 +513,18 @@ exports[`<TransactionDetails /> renders with one small deposit 1`] = `
             <div
               className="ml-auto card-cell-text align-self-center col-md-12 col-auto"
             >
-              <a
-                className="jsx-3150401870 account-link"
-                href="/accounts/signer2.test"
+              <span
                 onClick={[Function]}
-                onMouseEnter={[Function]}
               >
-                signer2.test
-              </a>
+                <a
+                  className="jsx-3150401870 account-link"
+                  href="/accounts/signer2.test"
+                  onClick={[Function]}
+                  onMouseEnter={[Function]}
+                >
+                  signer2.test
+                </a>
+              </span>
             </div>
           </div>
         </div>
@@ -546,14 +564,18 @@ exports[`<TransactionDetails /> renders with one small deposit 1`] = `
             <div
               className="ml-auto card-cell-text align-self-center col-md-12 col-auto"
             >
-              <a
-                className="jsx-3150401870 account-link"
-                href="/accounts/receiver2.test"
+              <span
                 onClick={[Function]}
-                onMouseEnter={[Function]}
               >
-                receiver2.test
-              </a>
+                <a
+                  className="jsx-3150401870 account-link"
+                  href="/accounts/receiver2.test"
+                  onClick={[Function]}
+                  onMouseEnter={[Function]}
+                >
+                  receiver2.test
+                </a>
+              </span>
             </div>
           </div>
         </div>
@@ -654,7 +676,8 @@ exports[`<TransactionDetails /> renders with one small deposit 1`] = `
                 onMouseOver={[Function]}
               >
                 &lt;0.00001
-                 Ⓝ
+                 
+                Ⓝ
               </span>
             </div>
           </div>
@@ -702,7 +725,8 @@ exports[`<TransactionDetails /> renders with one small deposit 1`] = `
                 onMouseOver={[Function]}
               >
                 &lt;0.00001
-                 Ⓝ
+                 
+                Ⓝ
               </span>
             </div>
           </div>
@@ -899,14 +923,18 @@ exports[`<TransactionDetails /> renders with one small deposit 1`] = `
             <div
               className="ml-auto card-cell-text align-self-center col-md-12 col-auto"
             >
-              <a
-                className="block-link"
-                href="/blocks/222BBBgnFjkCBKCsRNEBrRLDQCFZNxLAi6uXzmLaVrrj"
+              <span
                 onClick={[Function]}
-                onMouseEnter={[Function]}
               >
-                222BBBgnFjkCBKCsRNEBrRLDQCFZNxLAi6uXzmLaVrrj
-              </a>
+                <a
+                  className="block-link"
+                  href="/blocks/222BBBgnFjkCBKCsRNEBrRLDQCFZNxLAi6uXzmLaVrrj"
+                  onClick={[Function]}
+                  onMouseEnter={[Function]}
+                >
+                  222BBBgnFjkCBKCsRNEBrRLDQCFZNxLAi6uXzmLaVrrj
+                </a>
+              </span>
             </div>
           </div>
         </div>
@@ -957,14 +985,18 @@ exports[`<TransactionDetails /> renders with two big deposit 1`] = `
             <div
               className="ml-auto card-cell-text align-self-center col-md-12 col-auto"
             >
-              <a
-                className="jsx-3150401870 account-link"
-                href="/accounts/signer2.test"
+              <span
                 onClick={[Function]}
-                onMouseEnter={[Function]}
               >
-                signer2.test
-              </a>
+                <a
+                  className="jsx-3150401870 account-link"
+                  href="/accounts/signer2.test"
+                  onClick={[Function]}
+                  onMouseEnter={[Function]}
+                >
+                  signer2.test
+                </a>
+              </span>
             </div>
           </div>
         </div>
@@ -1004,14 +1036,18 @@ exports[`<TransactionDetails /> renders with two big deposit 1`] = `
             <div
               className="ml-auto card-cell-text align-self-center col-md-12 col-auto"
             >
-              <a
-                className="jsx-3150401870 account-link"
-                href="/accounts/receiver2.test"
+              <span
                 onClick={[Function]}
-                onMouseEnter={[Function]}
               >
-                receiver2.test
-              </a>
+                <a
+                  className="jsx-3150401870 account-link"
+                  href="/accounts/receiver2.test"
+                  onClick={[Function]}
+                  onMouseEnter={[Function]}
+                >
+                  receiver2.test
+                </a>
+              </span>
             </div>
           </div>
         </div>
@@ -1112,7 +1148,8 @@ exports[`<TransactionDetails /> renders with two big deposit 1`] = `
                 onMouseOver={[Function]}
               >
                 &lt;0.00001
-                 Ⓝ
+                 
+                Ⓝ
               </span>
             </div>
           </div>
@@ -1160,7 +1197,8 @@ exports[`<TransactionDetails /> renders with two big deposit 1`] = `
                 onMouseOver={[Function]}
               >
                 0.00014
-                 Ⓝ
+                 
+                Ⓝ
               </span>
             </div>
           </div>
@@ -1357,14 +1395,18 @@ exports[`<TransactionDetails /> renders with two big deposit 1`] = `
             <div
               className="ml-auto card-cell-text align-self-center col-md-12 col-auto"
             >
-              <a
-                className="block-link"
-                href="/blocks/222BBBgnFjkCBKCsRNEBrRLDQCFZNxLAi6uXzmLaVrrj"
+              <span
                 onClick={[Function]}
-                onMouseEnter={[Function]}
               >
-                222BBBgnFjkCBKCsRNEBrRLDQCFZNxLAi6uXzmLaVrrj
-              </a>
+                <a
+                  className="block-link"
+                  href="/blocks/222BBBgnFjkCBKCsRNEBrRLDQCFZNxLAi6uXzmLaVrrj"
+                  onClick={[Function]}
+                  onMouseEnter={[Function]}
+                >
+                  222BBBgnFjkCBKCsRNEBrRLDQCFZNxLAi6uXzmLaVrrj
+                </a>
+              </span>
             </div>
           </div>
         </div>

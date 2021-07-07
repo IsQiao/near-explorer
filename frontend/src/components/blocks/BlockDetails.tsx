@@ -6,13 +6,15 @@ import { Row, Col } from "react-bootstrap";
 import * as B from "../../libraries/explorer-wamp/blocks";
 import { DatabaseConsumer } from "../../context/DatabaseProvider";
 
+import AccountLink from "../utils/AccountLink";
 import BlockLink from "../utils/BlockLink";
 import CardCell from "../utils/CardCell";
 import Term from "../utils/Term";
 import Gas from "../utils/Gas";
 import GasPrice from "../utils/GasPrice";
+
 export interface Props {
-  block: B.BlockInfo;
+  block: B.DetailedBlockInfo;
 }
 
 const BlockDetails = ({ block }: Props) => {
@@ -23,7 +25,7 @@ const BlockDetails = ({ block }: Props) => {
           <Row noGutters>
             <Col className="block-info-container">
               <Row noGutters className="block-info-header">
-                <Col md="3">
+                <Col md="4">
                   <CardCell
                     title={
                       <Term
@@ -37,43 +39,13 @@ const BlockDetails = ({ block }: Props) => {
                     className="border-0"
                   />
                 </Col>
-                <Col md="3">
+                <Col md="4">
                   <CardCell
-                    title={
-                      <Term
-                        title={"Gas Used"}
-                        text={
-                          "Total units of gas used by transactions in this block. "
-                        }
-                        href={"https://docs.near.org/docs/concepts/gas"}
-                      />
-                    }
-                    imgLink="/static/images/icon-m-size.svg"
-                    text={
-                      block.gasUsed ? (
-                        <Gas gas={new BN(block.gasUsed)} />
-                      ) : (
-                        "..."
-                      )
-                    }
+                    title={"Receipts"}
+                    text={block.receiptsCount.toString()}
                   />
                 </Col>
-                <Col md="3">
-                  <CardCell
-                    title={
-                      <Term
-                        title={"Gas Price"}
-                        text={
-                          "A unit of Tgas (TeraGas) is 1*10^12 units of gas. The costs of gas are very low in terms of NEAR, which is why Tgas is more commonly used. "
-                        }
-                        href={"https://docs.near.org/docs/concepts/gas"}
-                      />
-                    }
-                    imgLink="/static/images/icon-m-filter.svg"
-                    text={<GasPrice gasPrice={block.gasPrice} />}
-                  />
-                </Col>
-                <Col md="3">
+                <Col md="4">
                   <CardCell
                     title={
                       <Term
@@ -88,16 +60,60 @@ const BlockDetails = ({ block }: Props) => {
                     }
                     imgLink="/static/images/icon-t-status.svg"
                     text={
-                      typeof context.finalTimestamp === "undefined"
+                      typeof context.finalityStatus
+                        ?.finalBlockTimestampNanosecond === "undefined"
                         ? "Checking Finality..."
-                        : new BN(block.timestamp).lte(context.finalTimestamp)
+                        : new BN(block.timestamp).lte(
+                            context.finalityStatus.finalBlockTimestampNanosecond.divn(
+                              10 ** 6
+                            )
+                          )
                         ? "Finalized"
                         : "Finalizing"
                     }
                   />
                 </Col>
               </Row>
-              <Row noGutters className="border-0">
+              <Row noGutters>
+                <Col md="4">
+                  <CardCell
+                    title={"Author"}
+                    text={<AccountLink accountId={block.authorAccountId} />}
+                    className="border-0"
+                  />
+                </Col>
+                <Col md="4">
+                  <CardCell
+                    title={
+                      <Term
+                        title={"Gas Used"}
+                        text={
+                          "Total units of gas used by transactions in this block. "
+                        }
+                        href={"https://docs.near.org/docs/concepts/gas"}
+                      />
+                    }
+                    imgLink="/static/images/icon-m-size.svg"
+                    text={<Gas gas={block.gasUsed} />}
+                  />
+                </Col>
+                <Col md="4">
+                  <CardCell
+                    title={
+                      <Term
+                        title={"Gas Price"}
+                        text={
+                          "A unit of Tgas (TeraGas) is 1*10^12 units of gas. The costs of gas are very low in terms of NEAR, which is why Tgas is more commonly used. "
+                        }
+                        href={"https://docs.near.org/docs/concepts/gas"}
+                      />
+                    }
+                    imgLink="/static/images/icon-m-filter.svg"
+                    text={<GasPrice gasPrice={block.gasPrice} />}
+                  />
+                </Col>
+              </Row>
+              <Row noGutters>
                 <Col md="4">
                   <CardCell
                     title={
@@ -121,7 +137,6 @@ const BlockDetails = ({ block }: Props) => {
                       />
                     }
                     text={block.hash}
-                    className="border-0"
                   />
                 </Col>
               </Row>
@@ -175,6 +190,12 @@ const BlockDetails = ({ block }: Props) => {
 
             .block-card-parent-hash {
               background-color: #f8f8f8;
+            }
+
+            @media (max-width: 768px) {
+              .block-info-container .card-cell {
+                border-left: 0;
+              }
             }
           `}</style>
         </>

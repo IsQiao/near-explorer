@@ -5,19 +5,28 @@ import { OverlayTrigger, Tooltip } from "react-bootstrap";
 
 const FRAC_DIGITS = 5;
 
-const Balance = ({ amount }) => {
+const Balance = ({
+  amount,
+  label = null,
+  className = undefined,
+  formulatedAmount = undefined,
+}) => {
   if (!amount) {
     throw new Error("amount property should not be null");
   }
 
-  let amountShow = formatNEAR(amount);
+  const defaultLabel = "Ⓝ";
+
+  let amountShow = !formulatedAmount ? formatNEAR(amount) : formulatedAmount;
   let amountPrecise = showInYocto(amount);
   return (
     <OverlayTrigger
       placement={"bottom"}
       overlay={<Tooltip>{amountPrecise}</Tooltip>}
     >
-      <span>{amountShow} Ⓝ</span>
+      <span className={className}>
+        {amountShow} {label ?? defaultLabel}
+      </span>
     </OverlayTrigger>
   );
 };
@@ -39,7 +48,7 @@ export const showInYocto = (amountStr) => {
   return formatWithCommas(amountStr) + " yoctoⓃ";
 };
 
-const formatWithCommas = (value) => {
+export const formatWithCommas = (value) => {
   const pattern = /(-?\d+)(\d{3})/;
   while (pattern.test(value)) {
     value = value.toString().replace(pattern, "$1,$2");

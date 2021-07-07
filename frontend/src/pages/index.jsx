@@ -2,13 +2,18 @@ import Head from "next/head";
 
 import { Container, Row, Col } from "react-bootstrap";
 
-import NodeStatsProvider from "../context/NodeStatsProvider";
+import Mixpanel from "../libraries/mixpanel";
+import NetworkStatsProvider from "../context/NetworkStatsProvider";
 
 import Search from "../components/utils/Search";
 import DashboardNode from "../components/dashboard/DashboardNode";
 import DashboardBlock from "../components/dashboard/DashboardBlock";
 import DashboardTransaction from "../components/dashboard/DashboardTransaction";
 class Dashboard extends React.Component {
+  componentDidMount() {
+    Mixpanel.track("Explorer View Landing Page");
+  }
+
   render() {
     return (
       <>
@@ -30,9 +35,9 @@ class Dashboard extends React.Component {
             <Col xs="12">
               <Row className="card-area" noGutters>
                 <Col xs="12" md="6" className="mt-4">
-                  <NodeStatsProvider>
+                  <NetworkStatsProvider>
                     <DashboardNode />
-                  </NodeStatsProvider>
+                  </NetworkStatsProvider>
                 </Col>
                 <Col xs="12" md="6" className="mt-4">
                   <DashboardBlock className="ml-md-4" />

@@ -2,8 +2,12 @@ import BN from "bn.js";
 
 import React, { createContext, useEffect, useState } from "react";
 
-import { DATA_SOURCE_TYPE } from "../libraries/consts";
-import { ExplorerApi } from "../libraries/explorer-wamp";
+import {
+  ExplorerApi,
+  instrumentTopicNameWithDataSource,
+} from "../libraries/explorer-wamp";
+
+import { FinalityStatus } from "./NetworkStatsProvider";
 
 export interface TransactionsCountStat {
   date: string;
@@ -11,7 +15,7 @@ export interface TransactionsCountStat {
 }
 
 export interface DbContext {
-  finalTimestamp?: BN;
+  finalityStatus?: FinalityStatus;
   latestBlockHeight?: BN;
   latestGasPrice?: BN;
   recentBlockProductionSpeed?: number;
@@ -26,7 +30,7 @@ export interface Props {
 }
 
 const DatabaseProvider = (props: Props) => {
-  const [finalTimestamp, dispatchFinalTimestamp] = useState<BN>();
+  const [finalityStatus, dispatchFinalityStatus] = useState<FinalityStatus>();
   const [latestBlockHeight, dispatchLatestBlockHeight] = useState<BN>();
   const [latestGasPrice, dispatchLatestGasPrice] = useState<BN>();
   const [
@@ -48,8 +52,25 @@ const DatabaseProvider = (props: Props) => {
       recentBlockProductionSpeed: number;
     }
   ) {
-    dispatchLatestBlockHeight(new BN(namedArgs.latestBlockHeight));
-    dispatchLatestGasPrice(new BN(namedArgs.latestGasPrice));
+    const latestBlockHeight = new BN(namedArgs.latestBlockHeight);
+    dispatchLatestBlockHeight((prevLatestBlockHeight) => {
+      if (
+        prevLatestBlockHeight &&
+        latestBlockHeight.eq(prevLatestBlockHeight)
+      ) {
+        return prevLatestBlockHeight;
+      }
+      return latestBlockHeight;
+    });
+
+    const latestGasPrice = new BN(namedArgs.latestGasPrice);
+    dispatchLatestGasPrice((prevLatestGasPrice) => {
+      if (prevLatestGasPrice && latestGasPrice.eq(prevLatestGasPrice)) {
+        return prevLatestGasPrice;
+      }
+      return latestGasPrice;
+    });
+
     dispatchRecentBlockProductionSpeed(namedArgs.recentBlockProductionSpeed);
   };
 
@@ -64,24 +85,17 @@ const DatabaseProvider = (props: Props) => {
     dispatchRecentTransactionsCount(namedArgs.recentTransactionsCount);
   };
 
-  const storeFinalTimestamp = (
-    _positionalArgs: any,
-    namedArgs: {
-      finalTimestamp: string;
-    }
-  ) => {
-    dispatchFinalTimestamp(new BN(namedArgs.finalTimestamp));
+  const storeFinalityStatus = (_positionalArgs: any, namedArgs: any) => {
+    dispatchFinalityStatus({
+      finalBlockTimestampNanosecond: new BN(
+        namedArgs.finalBlockTimestampNanosecond
+      ),
+      finalBlockHeight: namedArgs.finalBlockHeight,
+    });
   };
 
   useEffect(() => {
     const explorerApi = new ExplorerApi();
-
-    function instrumentTopicNameWithDataSource(topicName: string) {
-      if (explorerApi.dataSource === DATA_SOURCE_TYPE.LEGACY_SYNC_BACKEND) {
-        return topicName;
-      }
-      return `${topicName}:${explorerApi.dataSource}`;
-    }
 
     explorerApi.subscribe(
       instrumentTopicNameWithDataSource("chain-blocks-stats"),
@@ -91,7 +105,7 @@ const DatabaseProvider = (props: Props) => {
       instrumentTopicNameWithDataSource("chain-transactions-stats"),
       storeTransactionsStats
     );
-    explorerApi.subscribe("final-timestamp", storeFinalTimestamp);
+    explorerApi.subscribe("finality-status", storeFinalityStatus);
 
     return () => {
       explorerApi.unsubscribe(
@@ -100,16 +114,14 @@ const DatabaseProvider = (props: Props) => {
       explorerApi.unsubscribe(
         instrumentTopicNameWithDataSource("chain-transactions-stats")
       );
-      explorerApi.unsubscribe(
-        instrumentTopicNameWithDataSource("final-timestamp")
-      );
+      explorerApi.unsubscribe("finality-status");
     };
   }, []);
 
   return (
     <DatabaseContext.Provider
       value={{
-        finalTimestamp,
+        finalityStatus,
         latestBlockHeight,
         latestGasPrice,
         recentBlockProductionSpeed,

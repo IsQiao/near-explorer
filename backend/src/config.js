@@ -36,17 +36,24 @@ exports.regularSyncMissingNearcoreStateInterval =
   parseInt(process.env.NEAR_REGULAR_SYNC_MISSING_NEARCORE_STATE_INTERVAL) ||
   60000;
 
-exports.regularQueryRPCInterval =
-  parseInt(process.env.NEAR_REGULAR_QUERY_RPC_INTERVAL) || 1000;
+exports.regularPublishFinalityStatusInterval =
+  parseInt(process.env.NEAR_REGULAR_PUBLISH_FINALITY_STATUS_INTERVAL) || 1000;
 
 exports.regularQueryStatsInterval =
   parseInt(process.env.NEAR_REGULAR_QUERY_STATS_INTERVAL) || 1000;
 
-exports.regularCheckNodeStatusInterval =
-  parseInt(process.env.NEAR_REGULAR_QUERY_NODE_INTERVAL) || 1000;
+exports.regularPublishNetworkInfoInterval =
+  parseInt(process.env.NEAR_REGULAR_PUBLISH_NETWORK_INFO_INTERVAL) || 1000;
+
+exports.regularFetchStakingPoolsInfoInterval =
+  parseInt(process.env.NEAR_REGULAR_FETCH_STAKING_POOLS_INFO_INTERVAL) || 15000;
 
 exports.regularStatsInterval =
   parseInt(process.env.NEAR_REGULAR_STATS_INTERVAL) || 3600000;
+
+exports.regularCalculateCirculatingSupplyInterval =
+  parseInt(process.env.NEAR_REGULAR_CALCULATE_CIRCULATING_SUPPLY) ||
+  3600000 * 24;
 
 exports.wampNearNetworkName =
   process.env.WAMP_NEAR_NETWORK_NAME || "localhostnet";

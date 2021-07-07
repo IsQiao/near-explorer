@@ -9,7 +9,7 @@ import * as T from "../../libraries/explorer-wamp/transactions";
 export interface Props<A> {
   actionKind: keyof TransactionMessageRenderers;
   actionArgs: A;
-  transaction: T.Transaction;
+  receiverId: string;
   showDetails?: boolean;
 }
 
@@ -56,16 +56,13 @@ export const displayArgs = (args: string) => {
 };
 
 const transactionMessageRenderers: TransactionMessageRenderers = {
-  CreateAccount: ({ transaction: { receiverId } }: Props<T.CreateAccount>) => (
+  CreateAccount: ({ receiverId }: Props<T.CreateAccount>) => (
     <>
       {"New account created: "}
       <AccountLink accountId={receiverId} />
     </>
   ),
-  DeleteAccount: ({
-    transaction: { receiverId },
-    actionArgs,
-  }: Props<T.DeleteAccount>) => (
+  DeleteAccount: ({ receiverId, actionArgs }: Props<T.DeleteAccount>) => (
     <>
       {"Delete account "}
       <AccountLink accountId={receiverId} />
@@ -73,23 +70,26 @@ const transactionMessageRenderers: TransactionMessageRenderers = {
       <AccountLink accountId={actionArgs.beneficiary_id} />
     </>
   ),
-  DeployContract: ({
-    transaction: { receiverId },
-  }: Props<T.DeployContract>) => (
+  DeployContract: ({ receiverId }: Props<T.DeployContract>) => (
     <>
       {"Contract deployed: "}
       <AccountLink accountId={receiverId} />
     </>
   ),
   FunctionCall: ({
-    transaction: { receiverId },
+    receiverId,
     actionArgs,
     showDetails,
   }: Props<T.FunctionCall>) => {
     let args;
     if (showDetails) {
-      if (!actionArgs.args) {
+      if (typeof actionArgs.args === "undefined") {
         args = <p>Loading...</p>;
+      } else if (
+        (typeof actionArgs.args === "string" && actionArgs.args.length === 0) ||
+        !actionArgs.args
+      ) {
+        args = <p>The arguments are empty</p>;
       } else {
         args = displayArgs(actionArgs.args);
       }
@@ -107,10 +107,7 @@ const transactionMessageRenderers: TransactionMessageRenderers = {
       </>
     );
   },
-  Transfer: ({
-    transaction: { receiverId },
-    actionArgs: { deposit },
-  }: Props<T.Transfer>) => (
+  Transfer: ({ receiverId, actionArgs: { deposit } }: Props<T.Transfer>) => (
     <>
       {`Transferred `}
       <Balance amount={deposit} />
@@ -124,7 +121,7 @@ const transactionMessageRenderers: TransactionMessageRenderers = {
       <Balance amount={stake} /> {`with ${public_key.substring(0, 15)}...`}
     </>
   ),
-  AddKey: ({ transaction: { receiverId }, actionArgs }: Props<T.AddKey>) => (
+  AddKey: ({ receiverId, actionArgs }: Props<T.AddKey>) => (
     <>
       {typeof actionArgs.access_key.permission === "object" ? (
         actionArgs.access_key.permission.permission_kind ? (
